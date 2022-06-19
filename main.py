@@ -1,7 +1,9 @@
 import time
 from re import A
 from typing import Union
-from fastapi import Body, FastAPI, Query, Path, Request, UploadFile, HTTPException
+
+from fastapi import (Body, FastAPI, HTTPException, Path, Query, Request,
+                     UploadFile)
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field, HttpUrl
 
@@ -55,7 +57,7 @@ async def create_file(file: UploadFile):
     return {"file_size": file.filename}
 
 @app.post("/users/items",response_model=Item,tags=["users"])
-async def create_item(item: Item,user: User = Body(description="test body"),singleBody: int = Body()):
+async def create_user_item(item: Item,user: User = Body(description="test body"),singleBody: int = Body()):
     return {"item": item, "user": user, "singleBody": singleBody}
 
 @app.get("/",tags=["root"])
@@ -69,12 +71,12 @@ async def root():
     return {"message": "Hello World"}
 
 
-@app.post("/items/{item_id}",tags=["items"])
-async def create_item(item_id: int, item: Item):
-    item_id:int = Path(title="Item ID", description="The ID of the item to get", generic=True, example=1)
-    print(item_id)
-    print(item.dict())
-    return {"item_id": item_id, **item.dict()}
+# @app.post("/items/{item_id}",tags=["items"])
+# async def create_item(item_id: int, item: Item):
+#     item_id:int = Path(title="Item ID", description="The ID of the item to get", generic=True, example=1)
+#     print(item_id)
+#     print(item.dict())
+#     return {"item_id": item_id, **item.dict()}
 
 
 @app.get("/items/{item_id}",tags=["items"])
